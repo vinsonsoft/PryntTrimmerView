@@ -15,13 +15,6 @@ public class AVAssetTimeSelector: UIView, UIScrollViewDelegate {
 
     let assetPreview = AssetVideoScrollView()
 
-    /// The maximum duration allowed for the trimming. Change it before setting the asset, as the asset preview
-    public var maxDuration: Double = 15 {
-        didSet {
-            assetPreview.maxDuration = maxDuration
-        }
-    }
-
     /// The asset to be displayed in the underlying scroll view. Setting a new asset will automatically refresh the thumbnails.
     public var asset: AVAsset? {
         didSet {
@@ -62,8 +55,9 @@ public class AVAssetTimeSelector: UIView, UIScrollViewDelegate {
     func constrainAssetPreview() {
         assetPreview.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         assetPreview.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        assetPreview.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        assetPreview.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        assetPreview.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
+        assetPreview.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 5).isActive = true
+        
     }
 
     func assetDidChange(newAsset: AVAsset?) {

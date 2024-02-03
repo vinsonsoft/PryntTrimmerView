@@ -14,7 +14,6 @@ class AssetVideoScrollView: UIScrollView {
     private var widthConstraint: NSLayoutConstraint?
 
     let contentView = UIView()
-    public var maxDuration: Double = 15
     private var generator: AVAssetImageGenerator?
 
     override init(frame: CGRect) {
@@ -40,8 +39,8 @@ class AssetVideoScrollView: UIScrollView {
         addSubview(contentView)
 
         contentView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        contentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 5).isActive = true
         widthConstraint = contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1.0)
         widthConstraint?.isActive = true
     }
@@ -72,7 +71,7 @@ class AssetVideoScrollView: UIScrollView {
 
         let assetSize = track.naturalSize.applying(track.preferredTransform)
 
-        let height = frame.height
+        let height = frame.height - 10
         let ratio = assetSize.width / assetSize.height
         let width = height * ratio
         return CGSize(width: abs(width), height: abs(height))
@@ -84,9 +83,9 @@ class AssetVideoScrollView: UIScrollView {
 
     private func setContentSize(for asset: AVAsset) -> CGSize {
 
-        let contentWidthFactor = CGFloat(max(1, asset.duration.seconds / maxDuration))
+
         widthConstraint?.isActive = false
-        widthConstraint = contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: contentWidthFactor)
+        widthConstraint = contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1)
         widthConstraint?.isActive = true
         layoutIfNeeded()
         return contentView.bounds.size
@@ -112,7 +111,9 @@ class AssetVideoScrollView: UIScrollView {
             thumbnailView.frame.origin = CGPoint(x: CGFloat(index) * size.width, y: 0)
             thumbnailView.tag = index
             contentView.addSubview(thumbnailView)
+            
         }
+        contentSize = contentView.bounds.size
     }
 
     private func getThumbnailTimes(for asset: AVAsset, numberOfThumbnails: Int) -> [NSValue] {
